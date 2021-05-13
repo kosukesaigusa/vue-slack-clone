@@ -1,22 +1,23 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div>
+    <nav id="nav" class="flex my-4 pl-4">
+      <div class="my-auto">
+        <ul class="flex">
+          <li class="p-4"><router-link to="/">Home</router-link></li>
+          <li class="p-4"><router-link to="/chat">Chat</router-link></li>
+          <li class="p-4"><router-link to="/about">About</router-link></li>
+        </ul>
+      </div>
+    </nav>
   </div>
-  <router-view />
+  <div class="container px-4">
+    <router-view />
+  </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
+* {
+  color: #222222;
 }
 
 #nav a {
@@ -26,5 +27,9 @@
 
 #nav a.router-link-exact-active {
   color: #42b983;
+}
+
+.container {
+  margin: 0 auto;
 }
 </style>
