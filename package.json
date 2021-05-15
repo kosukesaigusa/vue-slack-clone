@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@heroicons/vue": "^1.0.1",
     "@tailwindcss/postcss7-compat": "^2.1.2",
     "core-js": "^3.6.5",
     "firebase": "^8.5.0",
