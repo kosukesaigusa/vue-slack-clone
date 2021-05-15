@@ -10,14 +10,17 @@ const firebaseConfig = {
   measurementId: "G-4GLMSB0P6L",
 };
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-
 export const db = firebaseApp.firestore();
-export const usersCollection = db.collection("users");
 
+// ========================
+// User
+// ========================
 interface User {
   id: string;
   userName: string;
 }
+
+export const usersCollection = db.collection("users");
 
 export const createUser = (
   user: User
@@ -32,4 +35,21 @@ export const getUser = async (
 ): Promise<firebase.firestore.DocumentData | undefined | null> => {
   const user = await usersCollection.doc(id).get();
   return user.exists ? user.data() : null;
+};
+
+// ========================
+// Job
+// ========================
+interface Job {
+  id: string;
+  farmerName: string;
+  postedAt: firebase.firestore.Timestamp;
+  prefecture: string;
+  city: string;
+}
+
+export const jobsCollection = db.collection("jobs");
+export const getJobs = async (): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | null> => {
+  const jobSnapshot = await jobsCollection.get();
+  return jobSnapshot.empty ? jobSnapshot : null;
 };

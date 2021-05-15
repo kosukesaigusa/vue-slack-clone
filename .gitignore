@@ -21,3 +21,14 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Firebase related
+/coverage
+/.coverage
+/.nyc_output
+firebase-debug.log
+firebase-debug.*.log
+.npmrc
+*.iml
+*.tgz
+/functions/vue-slack-clone-tutorial-firebase-adminsdk-h759j-ec98f1a1bb.json
