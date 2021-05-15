@@ -45,9 +45,9 @@ export const jobConverter = {
   ): Job {
     const data = snapshot.data();
     return new Job(
-      data.farmerName,
+      data.farmer_name,
       data.description,
-      data.postedAt,
+      data.posted_at,
       data.prefecture,
       data.city
     );
