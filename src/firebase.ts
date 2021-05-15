@@ -51,5 +51,5 @@ interface Job {
 export const jobsCollection = db.collection("jobs");
 export const getJobs = async (): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | null> => {
   const jobSnapshot = await jobsCollection.get();
-  return jobSnapshot.empty ? jobSnapshot : null;
+  return jobSnapshot.empty ? null : jobSnapshot;
 };
