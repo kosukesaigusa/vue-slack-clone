@@ -1,14 +1,6 @@
 import firebase from "firebase";
+import firebaseConfig from "./firebase_config.json";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAU6LNmfMm1HFBUbFXkL0TPNaq30zhJFes",
-  authDomain: "vue-slack-clone-tutorial.firebaseapp.com",
-  projectId: "vue-slack-clone-tutorial",
-  storageBucket: "vue-slack-clone-tutorial.appspot.com",
-  messagingSenderId: "952125196351",
-  appId: "1:952125196351:web:0076b77a0db21a3b6dd08a",
-  measurementId: "G-4GLMSB0P6L",
-};
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebaseApp.firestore();
 

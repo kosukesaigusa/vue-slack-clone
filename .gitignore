@@ -31,4 +31,5 @@ firebase-debug.*.log
 .npmrc
 *.iml
 *.tgz
+firebase_config.json
 /functions/vue-slack-clone-tutorial-firebase-adminsdk-h759j-ec98f1a1bb.json
