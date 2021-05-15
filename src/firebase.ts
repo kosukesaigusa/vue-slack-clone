@@ -42,6 +42,6 @@ interface Job {
 
 export const jobsCollection = db.collection("jobs");
 export const getJobs = async (): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | null> => {
-  const jobSnapshot = await jobsCollection.get();
+  const jobSnapshot = await jobsCollection.orderBy("posted_at", "desc").get();
   return jobSnapshot.empty ? null : jobSnapshot;
 };

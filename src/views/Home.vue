@@ -1,47 +1,23 @@
 <template>
   <div class="home">
-    <!-- <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
-      <div class="">
-        <img
-          class="h-48 w-full object-cover"
-          src="https://www.furusato-web.jp/wordpress/wp-content/uploads/2019/09/shimokawa7.jpg"
-          alt="title"
-        />
-      </div>
-      <div class="p-4">
-        <div class="text-lg font-bold pb-1">MOTTAI ファーム</div>
-        <div class="text-sm text-gray-500 pb-1">掲載日：2021-05-13 (木)</div>
-        <p class="text-gray-500">
-          MOTTAI
-          ファームは神奈川県小田原にある、家族経営の小さな農家です。現在、みかんの収穫を手伝ってくれる方を募集しています。お礼に収穫したばかりのみかんと自家製みかんジャムをお渡ししています。私たちと一緒にみかんの収穫を...
-        </p>
-        <div class="flex">
-          <div class="pr-1">
-            <LocationMarkerIcon class="h-6 w-6 fill-green" />
-          </div>
-          <div class="text-gray-500">神奈川県小田原市</div>
-        </div>
-      </div>
-    </div> -->
-    <!-- <ul>
-      <li v-for="(job, index) in jobs" :key="index">{{ job.farmerName }}</li>
-    </ul> -->
+    <div class="pb-4">
+      <button :class="tokyoButtonCSS" @click="toggleTokyo">東京</button>
+      <button :class="kanagawaButtonCSS" @click="toggleKanagawa">神奈川</button>
+    </div>
     <div
       class="bg-white rounded-xl shadow-md overflow-hidden mb-8"
       v-for="(job, index) in jobs"
       :key="index"
     >
       <div class="">
-        <img
-          class="h-48 w-full object-cover"
-          src="https://www.furusato-web.jp/wordpress/wp-content/uploads/2019/09/shimokawa7.jpg"
-          alt="title"
-        />
+        <img class="h-48 w-full object-cover" :src="job.imageUrl" alt="title" />
       </div>
       <div class="p-4">
         <div class="text-lg font-bold pb-1">{{ job.farmerName }}</div>
         <div class="text-sm text-gray-500 pb-1">
-          掲載日：{{ job.postedAt }} (木)
+          掲載日：{{ formatDate(job.postedAt) }} ({{
+            japaneseDayOfWeek(job.postedAt)
+          }})
         </div>
         <p class="text-gray-500">
           {{ job.description }}
@@ -61,17 +37,66 @@
 import { defineComponent } from "vue";
 import { LocationMarkerIcon } from "@heroicons/vue/solid";
 import { Job, jobConverter } from "@/models/job";
-import { getJobs } from "@/firebase";
+import { getJobs, jobsCollection } from "@/firebase";
+import { japaneseDayOfWeek, formatDate } from "@/utils/datetime";
 
 interface DataType {
   jobs: Job[];
+  tokyo: boolean;
+  kanagawa: boolean;
+  tokyoButtonCSS: string;
+  kanagawaButtonCSS: string;
 }
+
+const selectedButtonCSS =
+  "bg-blue-500 text-white font-bold py-1 px-2 mr-2 rounded-full";
+const unselectedButtonCSS =
+  "bg-transparent text-blue-700 font-semibold py-1 px-2 mr-2 border border-blue-500 rounded-full";
 
 export default defineComponent({
   components: { LocationMarkerIcon },
   name: "Home",
   data() {
-    return { jobs: [] } as DataType;
+    return {
+      jobs: [],
+      tokyo: false,
+      kanagawa: false,
+      tokyoButtonCSS: unselectedButtonCSS,
+      kanagawaButtonCSS: unselectedButtonCSS,
+    } as DataType;
+  },
+  methods: {
+    japaneseDayOfWeek,
+    formatDate,
+    toggleTokyo(): void {
+      this.tokyo = !this.tokyo;
+      this.tokyoButtonCSS = this.tokyo
+        ? selectedButtonCSS
+        : unselectedButtonCSS;
+      this.filter();
+    },
+    toggleKanagawa(): void {
+      this.kanagawa = !this.kanagawa;
+      this.kanagawaButtonCSS = this.kanagawa
+        ? selectedButtonCSS
+        : unselectedButtonCSS;
+      this.filter();
+    },
+    async filter(): Promise<void> {
+      this.jobs = [];
+      let query = jobsCollection.limit(30);
+      if (this.tokyo) {
+        query = query.where("prefecture", "==", "東京都");
+      }
+      if (this.kanagawa) {
+        query = query.where("prefecture", "==", "神奈川県");
+      }
+
+      const jobSnapshot = await query.get();
+      jobSnapshot?.docs.map((doc) => {
+        this.jobs.push(jobConverter.fromFirestore(doc));
+      });
+    },
   },
   async created(): Promise<void> {
     this.jobs = [];

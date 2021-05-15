@@ -31,13 +31,13 @@ const jobsCollection = admin.firestore().collection("jobs");
 async function main(): Promise<void> {
   for (const job of jobs) {
     await jobsCollection.add({
+      image_url: job.image_url,
       farmer_name: job.farmer_name,
       description: job.description,
       posted_at: new Date(job.posted_at),
       prefecture: job.prefecture,
       city: job.city,
     });
-    console.log(new Date(job.posted_at));
   }
 }
 

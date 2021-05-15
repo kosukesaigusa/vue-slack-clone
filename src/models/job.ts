@@ -1,6 +1,7 @@
 import firebase from "firebase";
 
 export interface FirestoreJobData {
+  image_url: string;
   farmer_name: string;
   description: string;
   posted_at: firebase.firestore.Timestamp;
@@ -9,6 +10,7 @@ export interface FirestoreJobData {
 }
 
 export class Job {
+  imageUrl = "";
   farmerName = "";
   description = "";
   postedAt;
@@ -16,12 +18,14 @@ export class Job {
   city = "";
 
   constructor(
+    imageUrl: string,
     farmerName: string,
     description: string,
-    postedAt: firebase.firestore.Timestamp,
+    postedAt: Date,
     prefecture: string,
     city: string
   ) {
+    this.imageUrl = imageUrl;
     this.farmerName = farmerName;
     this.description = description;
     this.postedAt = postedAt;
@@ -33,6 +37,7 @@ export class Job {
 export const jobConverter = {
   toFirestore: function (job: Job): firebase.firestore.DocumentData {
     return {
+      image_url: job.imageUrl,
       farmer_name: job.farmerName,
       description: job.description,
       posted_at: job.postedAt,
@@ -45,9 +50,10 @@ export const jobConverter = {
   ): Job {
     const data = snapshot.data();
     return new Job(
+      data.image_url,
       data.farmer_name,
       data.description,
-      data.posted_at,
+      data.posted_at.toDate(),
       data.prefecture,
       data.city
     );
