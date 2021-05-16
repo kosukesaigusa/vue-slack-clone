@@ -54,8 +54,8 @@ const unselectedButtonCSS =
   "bg-transparent text-blue-700 font-semibold py-1 px-2 mr-2 border border-blue-500 rounded-full";
 
 export default defineComponent({
-  components: { LocationMarkerIcon },
   name: "Home",
+  components: { LocationMarkerIcon },
   data() {
     return {
       jobs: [],

@@ -1,6 +1,6 @@
 <template>
-  <nav-bar />
-  <div class="container px-4">
+  <div class="container flex flex-col min-h-screen px-4 bg-gray-100">
+    <nav-bar />
     <router-view />
   </div>
 </template>
@@ -32,5 +32,6 @@ export default defineComponent({
 
 .container {
   margin: 0 auto;
+  min-height: 100vh;
 }
 </style>
