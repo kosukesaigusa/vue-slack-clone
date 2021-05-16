@@ -21,8 +21,10 @@ import { hhmm } from "@/utils/datetime";
 
 const myChatContainer = "w-5/6 ml-auto mx-4 my-4";
 const theirChatContainer = "w-5/6 mr-auto mx-4 my-4";
-const myMessageSection = "bg-green-300 inline-block p-2 rounded-lg order-last";
-const theirMessageSection = "bg-gray-300 inline-block p-2 rounded-lg";
+const myMessageSection =
+  "bg-green-300 inline-block p-2 rounded-lg order-last whitespace-pre-line";
+const theirMessageSection =
+  "bg-gray-300 inline-block p-2 rounded-lg whitespace-pre-line";
 const myExtraInfoSection = "pr-2 mt-auto ml-auto";
 const theirExtraInfoSection = "pl-2 mt-auto mr-auto";
 

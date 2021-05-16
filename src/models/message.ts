@@ -35,7 +35,7 @@ export const messageConverter = {
   ): Message {
     const data = snapshot.data();
     return new Message(
-      data.content,
+      data.content.replace(/\\n/g, "\n"),
       data.sent_at.toDate(),
       data.sender,
       data.read
