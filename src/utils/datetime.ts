@@ -14,3 +14,10 @@ export const formatDate = (date: Date): string => {
   };
   return new Date(date).toLocaleDateString("ja", options);
 };
+
+// Date オブジェクトを受け取って hh:mm の時刻を返す
+export const hhmm = (date: Date): string => {
+  const hour = date.getHours().toString().padStart(2, "0");
+  const minute = date.getMinutes().toString().padStart(2, "0");
+  return hour + ":" + minute;
+};

@@ -1,5 +1,6 @@
 import firebase from "firebase";
 import firebaseConfig from "./firebase_config.json";
+import { Message, messageConverter } from "@/models/message";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 export const db = firebaseApp.firestore();
@@ -32,16 +33,42 @@ export const getUser = async (
 // ========================
 // Job
 // ========================
-interface Job {
-  id: string;
-  farmerName: string;
-  postedAt: firebase.firestore.Timestamp;
-  prefecture: string;
-  city: string;
-}
-
 export const jobsCollection = db.collection("jobs");
 export const getJobs = async (): Promise<firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData> | null> => {
   const jobSnapshot = await jobsCollection.orderBy("posted_at", "desc").get();
   return jobSnapshot.empty ? null : jobSnapshot;
 };
+
+// ========================
+// Chats/Messages
+// ========================
+export const chatsCollection = db.collection("chats");
+export const messagesCollection = (
+  chatId: string
+): firebase.firestore.CollectionReference => {
+  return chatsCollection.doc(chatId).collection("messages");
+};
+
+export const createMessage = (
+  chatId: string,
+  message: Message
+): Promise<
+  firebase.firestore.DocumentReference<firebase.firestore.DocumentData>
+> => {
+  const data = messageConverter.toFirestore(message);
+  return messagesCollection(chatId).add(data);
+};
+
+// export const listenMessages = async (chatId: string): Promise<Message[]> => {
+//   let messages: Message[] = [];
+//   const close = messagesCollection(chatId)
+//     .limit(30)
+//     .orderBy("sent_at", "desc")
+//     .onSnapshot((snapshot) => {
+//       messages = snapshot.docs.map((doc) => {
+//         return messageConverter.fromFirestore(doc);
+//       });
+//     });
+//   onUnmounted(close);
+//   return messages;
+// };
